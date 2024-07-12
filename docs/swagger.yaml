@@ -1,0 +1,82 @@
+basePath: /
+definitions:
+  api.NotificationsResponse:
+    properties:
+      notifications:
+        items:
+          $ref: '#/definitions/model.Notification'
+        type: array
+    type: object
+  model.Notification:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      receiver_email:
+        type: string
+      sender_email:
+        type: string
+      text:
+        type: string
+    type: object
+  request.CreateNotification:
+    properties:
+      receiver_email:
+        maxLength: 255
+        type: string
+      sender_email:
+        maxLength: 255
+        type: string
+      text:
+        maxLength: 1024
+        type: string
+    required:
+    - receiver_email
+    - sender_email
+    - text
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  title: notifications
+paths:
+  /notifications:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/api.NotificationsResponse'
+            type: array
+      summary: get notifications
+      tags:
+      - notifications
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateNotification'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Notification'
+            type: array
+      summary: create notification
+      tags:
+      - notifications
+swagger: "2.0"
